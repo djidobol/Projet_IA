@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QCM Auto — Portail Professeur</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f4f8; color: #2d3748; }
+
+    header {
+      background: linear-gradient(135deg, #2b6cb0, #4299e1);
+      color: white; padding: 20px 40px;
+      display: flex; align-items: center; gap: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    header h1 { font-size: 1.6rem; }
+    header p { font-size: 0.9rem; opacity: 0.85; }
+
+    .container { max-width: 960px; margin: 40px auto; padding: 0 20px; }
+
+    .card {
+      background: white; border-radius: 12px;
+      padding: 30px; margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .card h2 { font-size: 1.2rem; margin-bottom: 20px; color: #2b6cb0; border-bottom: 2px solid #ebf8ff; padding-bottom: 10px; }
+
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+
+    .upload-zone {
+      border: 2px dashed #4299e1; border-radius: 10px;
+      padding: 40px; text-align: center; cursor: pointer;
+      transition: all 0.2s; background: #ebf8ff;
+    }
+    .upload-zone:hover { background: #bee3f8; border-color: #2b6cb0; }
+    .upload-zone.active { background: #c6f6d5; border-color: #38a169; }
+    .upload-zone input { display: none; }
+    .upload-zone .icon { font-size: 2.5rem; margin-bottom: 10px; }
+    .upload-zone p { color: #4a5568; font-size: 0.95rem; }
+    .upload-zone .nom-fichier { font-weight: bold; color: #2b6cb0; margin-top: 8px; }
+
+    input[type=range] { width: 100%; accent-color: #2b6cb0; }
+    .range-val { display: inline-block; background: #2b6cb0; color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.85rem; margin-left: 10px; }
+
+    .btn {
+      display: inline-block; padding: 12px 30px; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: #2b6cb0; color: white; width: 100%; }
+    .btn-primary:hover { background: #2c5282; }
+    .btn-primary:disabled { background: #a0aec0; cursor: not-allowed; }
+
+    /* Progression */
+    #section-progression { display: none; }
+    .progress-bar-wrap { background: #e2e8f0; border-radius: 50px; height: 14px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #4299e1, #2b6cb0); border-radius: 50px; transition: width 0.4s; }
+    .etapes { display: flex; justify-content: space-between; margin-top: 15px; }
+    .etape { text-align: center; font-size: 0.8rem; color: #718096; }
+    .etape.active { color: #2b6cb0; font-weight: bold; }
+    .etape.done { color: #38a169; }
+
+    /* QCM résultat */
+    #section-qcm { display: none; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+    .stat-card { background: #ebf8ff; border-radius: 8px; padding: 15px; text-align: center; }
+    .stat-card .val { font-size: 2rem; font-weight: bold; color: #2b6cb0; }
+    .stat-card .label { font-size: 0.8rem; color: #718096; margin-top: 4px; }
+
+    .question-card {
+      border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 20px; margin-bottom: 15px; background: #fafafa;
+      transition: box-shadow 0.2s;
+    }
+    .question-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .question-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .question-text { font-weight: 600; font-size: 1rem; flex: 1; }
+    .badge {
+      padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;
+      white-space: nowrap; margin-left: 10px;
+    }
+    .badge-facile { background: #c6f6d5; color: #276749; }
+    .badge-moyen { background: #fefcbf; color: #744210; }
+    .badge-difficile { background: #fed7d7; color: #742a2a; }
+
+    .reponses { margin-top: 10px; }
+    .reponse { padding: 6px 12px; border-radius: 6px; margin: 5px 0; font-size: 0.9rem; }
+    .reponse.correcte { background: #c6f6d5; border-left: 4px solid #38a169; }
+    .reponse.distracteur { background: #fed7d7; border-left: 4px solid #e53e3e; }
+
+    .confiance { font-size: 0.78rem; color: #718096; margin-top: 8px; }
+
+    .btn-export { background: #38a169; color: white; margin-top: 20px; }
+    .btn-export:hover { background: #276749; }
+
+    .erreur { background: #fff5f5; border: 1px solid #fc8181; border-radius: 8px; padding: 15px; color: #742a2a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🎓 QCM Auto</h1>
+    <p>Génération automatique de QCM à partir de vidéos de cours</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Formulaire upload -->
+  <div class="card" id="section-upload">
+    <h2>📹 Déposer une vidéo de cours</h2>
+
+    <div class="form-group">
+      <div class="upload-zone" id="dropzone" onclick="document.getElementById('input-video').click()">
+        <input type="file" id="input-video" accept="video/*" onchange="selectionnerFichier(this)">
+        <div class="icon">☁️</div>
+        <p>Cliquez ou glissez-déposez votre vidéo ici</p>
+        <p style="font-size:0.8rem; color:#a0aec0; margin-top:6px">Formats acceptés : mp4, mkv, avi, mov, webm — Max 500MB</p>
+        <div class="nom-fichier" id="nom-fichier"></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Nombre de questions à générer : <span class="range-val" id="val-nb">10</span></label>
+      <input type="range" id="nb-questions" min="5" max="30" value="10"
+             oninput="document.getElementById('val-nb').textContent = this.value">
+    </div>
+
+    <button class="btn btn-primary" id="btn-generer" onclick="lancerPipeline()" disabled>
+      ⚡ Générer le QCM
+    </button>
+  </div>
+
+  <!-- Progression -->
+  <div class="card" id="section-progression">
+    <h2>⏳ Génération en cours...</h2>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="barre-progression" style="width:0%"></div>
+    </div>
+    <div class="etapes">
+      <div class="etape" id="et-transcription">🎙️ Transcription</div>
+      <div class="etape" id="et-extraction">🧠 Extraction</div>
+      <div class="etape" id="et-generation">✍️ Génération</div>
+      <div class="etape" id="et-classification">📊 Classification</div>
+    </div>
+    <p style="margin-top:15px; color:#718096; font-size:0.9rem;" id="msg-statut">Initialisation...</p>
+  </div>
+
+  <!-- Résultat QCM -->
+  <div id="section-qcm">
+    <div class="card">
+      <h2>✅ QCM Généré</h2>
+      <div class="stats-grid" id="stats-grid"></div>
+      <button class="btn btn-export" onclick="exporterQCM()">⬇️ Télécharger le QCM (JSON)</button>
+    </div>
+    <div id="liste-questions"></div>
+  </div>
+
+</div>
+
+<script>
+let idTache = null;
+let intervalVerif = null;
+let qcmData = null;
+
+function selectionnerFichier(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById("nom-fichier").textContent = "📁 " + input.files[0].name;
+    document.getElementById("dropzone").classList.add("active");
+    document.getElementById("btn-generer").disabled = false;
+  }
+}
+
+async function lancerPipeline() {
+  const fichier = document.getElementById("input-video").files[0];
+  const nbQuestions = document.getElementById("nb-questions").value;
+
+  if (!fichier) { alert("Veuillez sélectionner une vidéo."); return; }
+
+  const formData = new FormData();
+  formData.append("video", fichier);
+  formData.append("nb_questions", nbQuestions);
+
+  document.getElementById("btn-generer").disabled = true;
+  document.getElementById("section-progression").style.display = "block";
+  document.getElementById("section-qcm").style.display = "none";
+
+  try {
+    const res = await fetch("/upload", { method: "POST", body: formData });
+    const data = await res.json();
+
+    if (data.erreur) { afficherErreur(data.erreur); return; }
+
+    idTache = data.id_tache;
+    intervalVerif = setInterval(verifierStatut, 2000);
+  } catch(e) {
+    afficherErreur("Erreur de connexion : " + e.message);
+  }
+}
+
+async function verifierStatut() {
+  if (!idTache) return;
+  try {
+    const res = await fetch(`/statut/${idTache}`);
+    const data = await res.json();
+
+    majProgression(data);
+
+    if (data.statut === "termine") {
+      clearInterval(intervalVerif);
+      await chargerQCM();
+    } else if (data.statut === "erreur") {
+      clearInterval(intervalVerif);
+      afficherErreur(data.erreur);
+    }
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+function majProgression(data) {
+  const pct = data.progression || 0;
+  document.getElementById("barre-progression").style.width = pct + "%";
+
+  const etapes = {
+    "transcription": ["et-transcription"],
+    "extraction":    ["et-transcription", "et-extraction"],
+    "generation":    ["et-transcription", "et-extraction", "et-generation"],
+    "classification":["et-transcription", "et-extraction", "et-generation", "et-classification"],
+    "termine":       ["et-transcription", "et-extraction", "et-generation", "et-classification"],
+  };
+
+  const messages = {
+    "demarrage":      "Démarrage du pipeline...",
+    "transcription":  "🎙️ Transcription de la vidéo avec Whisper...",
+    "extraction":     "🧠 Extraction des concepts clés avec LLaMA3...",
+    "generation":     "✍️ Génération des questions et distracteurs...",
+    "classification": "📊 Classification de la difficulté (Random Forest)...",
+    "termine":        "✅ QCM généré avec succès !"
+  };
+
+  document.getElementById("msg-statut").textContent = messages[data.statut] || data.statut;
+
+  // Réinitialiser toutes les étapes
+  ["et-transcription","et-extraction","et-generation","et-classification"].forEach(id => {
+    document.getElementById(id).className = "etape";
+  });
+
+  // Marquer les étapes actives/terminées
+  const actives = etapes[data.statut] || [];
+  actives.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.className = i === actives.length - 1 && data.statut !== "termine" ? "etape active" : "etape done";
+  });
+}
+
+async function chargerQCM() {
+  const res = await fetch(`/qcm/${idTache}`);
+  qcmData = await res.json();
+  afficherQCM(qcmData);
+}
+
+function afficherQCM(qcm) {
+  document.getElementById("section-qcm").style.display = "block";
+
+  const questions = qcm.questions || [];
+  const stats = qcm.statistiques || {};
+  const repartition = stats.repartition_difficulte || {};
+
+  // Stats
+  document.getElementById("stats-grid").innerHTML = `
+    <div class="stat-card"><div class="val">${questions.length}</div><div class="label">Questions générées</div></div>
+    <div class="stat-card"><div class="val">${repartition.facile || 0}</div><div class="label">✅ Faciles</div></div>
+    <div class="stat-card"><div class="val">${repartition.moyen || 0}</div><div class="label">🟡 Moyennes</div></div>
+  `;
+
+  // Questions
+  const container = document.getElementById("liste-questions");
+  container.innerHTML = questions.map((q, i) => {
+    const diff = q.difficulte_predite_rf || q.difficulte_estimee || "moyen";
+    const badgeClass = `badge-${diff}`;
+    const confiance = q.confiance_rf ? `Confiance RF : ${(q.confiance_rf * 100).toFixed(0)}%` : "";
+
+    const distracteurs = (q.distracteurs || []).map(d =>
+      `<div class="reponse distracteur">❌ ${d}</div>`
+    ).join("");
+
+    return `
+      <div class="card question-card">
+        <div class="question-header">
+          <div class="question-text">Q${i+1}. ${q.question}</div>
+          <span class="badge ${badgeClass}">${diff.toUpperCase()}</span>
+        </div>
+        <div class="reponses">
+          <div class="reponse correcte">✅ ${q.bonne_reponse}</div>
+          ${distracteurs}
+        </div>
+        ${confiance ? `<div class="confiance">${confiance}</div>` : ""}
+        ${q.explication ? `<div class="confiance">💡 ${q.explication}</div>` : ""}
+      </div>
+    `;
+  }).join("");
+}
+
+function exporterQCM() {
+  if (idTache) window.open(`/exporter/${idTache}`, "_blank");
+}
+
+function afficherErreur(msg) {
+  document.getElementById("section-progression").innerHTML = `
+    <div class="erreur">❌ Erreur : ${msg}</div>
+    <button class="btn btn-primary" style="margin-top:15px" onclick="location.reload()">Recommencer</button>
+  `;
+  document.getElementById("btn-generer").disabled = false;
+}
+
+// Drag & drop
+const dropzone = document.getElementById("dropzone");
+dropzone.addEventListener("dragover", e => { e.preventDefault(); dropzone.classList.add("active"); });
+dropzone.addEventListener("dragleave", () => dropzone.classList.remove("active"));
+dropzone.addEventListener("drop", e => {
+  e.preventDefault();
+  const fichier = e.dataTransfer.files[0];
+  if (fichier) {
+    document.getElementById("input-video").files = e.dataTransfer.files;
+    selectionnerFichier(document.getElementById("input-video"));
+  }
+});
+</script>
+
+</body>
+</html>

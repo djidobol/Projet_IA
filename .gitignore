@@ -1,0 +1,42 @@
+# Environnement Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Variables d'environnement (NE JAMAIS COMMIT)
+.env
+
+# Données sensibles
+data/videos/
+data/transcripts/
+data/qcm_raw/
+
+# Modèles entraînés (trop lourds pour Git)
+models/*.pkl
+models/*.joblib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
+logs/
