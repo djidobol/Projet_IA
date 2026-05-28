@@ -1,0 +1,518 @@
+[
+  {
+    "question": "Quel est le rôle principal du protocole IP ?",
+    "bonne_reponse": "Adresser et router les paquets entre les réseaux",
+    "distracteurs": [
+      "Établir une connexion fiable entre deux hôtes",
+      "Chiffrer les données transmises sur le réseau",
+      "Convertir les noms de domaine en adresses physiques"
+    ],
+    "explication": "IP (Internet Protocol) est responsable de l'adressage logique et du routage des paquets à travers les réseaux interconnectés.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.82
+  },
+  {
+    "question": "Combien de bits composent une adresse IPv4 ?",
+    "bonne_reponse": "32 bits",
+    "distracteurs": [
+      "16 bits",
+      "64 bits",
+      "128 bits"
+    ],
+    "explication": "Une adresse IPv4 est codée sur 32 bits, soit 4 octets séparés par des points (ex: 192.168.1.1).",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.90
+  },
+  {
+    "question": "Quelle couche du modèle OSI est responsable du routage des paquets ?",
+    "bonne_reponse": "La couche réseau (couche 3)",
+    "distracteurs": [
+      "La couche transport (couche 4)",
+      "La couche liaison de données (couche 2)",
+      "La couche session (couche 5)"
+    ],
+    "explication": "La couche réseau (layer 3) gère le routage des paquets d'un réseau à un autre grâce aux adresses IP.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.78
+  },
+  {
+    "question": "Quel protocole est utilisé pour traduire une adresse IP en adresse MAC ?",
+    "bonne_reponse": "ARP (Address Resolution Protocol)",
+    "distracteurs": [
+      "DNS (Domain Name System)",
+      "DHCP (Dynamic Host Configuration Protocol)",
+      "ICMP (Internet Control Message Protocol)"
+    ],
+    "explication": "ARP permet de résoudre une adresse IP connue en adresse MAC correspondante sur un réseau local.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.75
+  },
+  {
+    "question": "Quelle est la plage d'adresses IP réservée pour les réseaux privés de classe C ?",
+    "bonne_reponse": "192.168.0.0 à 192.168.255.255",
+    "distracteurs": [
+      "172.16.0.0 à 172.31.255.255",
+      "10.0.0.0 à 10.255.255.255",
+      "169.254.0.0 à 169.254.255.255"
+    ],
+    "explication": "Les adresses 192.168.x.x sont réservées aux réseaux privés de classe C selon la RFC 1918.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.71
+  },
+  {
+    "question": "Quel est le nombre maximum d'hôtes adressables dans un réseau /24 ?",
+    "bonne_reponse": "254 hôtes",
+    "distracteurs": [
+      "256 hôtes",
+      "255 hôtes",
+      "512 hôtes"
+    ],
+    "explication": "Un réseau /24 possède 256 adresses (2^8), dont 1 pour le réseau et 1 pour le broadcast, laissant 254 adresses pour les hôtes.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.68
+  },
+  {
+    "question": "Quel port est utilisé par défaut par le protocole HTTP ?",
+    "bonne_reponse": "Port 80",
+    "distracteurs": [
+      "Port 443",
+      "Port 21",
+      "Port 25"
+    ],
+    "explication": "HTTP utilise le port 80 par défaut. HTTPS utilise le port 443, FTP le port 21, et SMTP le port 25.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.88
+  },
+  {
+    "question": "Quelle est la différence entre un hub et un switch ?",
+    "bonne_reponse": "Le switch transmet les trames uniquement au port destinataire, le hub diffuse à tous les ports",
+    "distracteurs": [
+      "Le hub est plus rapide que le switch",
+      "Le switch fonctionne en couche 3, le hub en couche 2",
+      "Il n'y a aucune différence fonctionnelle entre les deux"
+    ],
+    "explication": "Un switch apprend les adresses MAC et transmet intelligemment les trames, contrairement au hub qui diffuse sur tous les ports créant des collisions.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.73
+  },
+  {
+    "question": "Combien de bits composent une adresse IPv6 ?",
+    "bonne_reponse": "128 bits",
+    "distracteurs": [
+      "64 bits",
+      "32 bits",
+      "256 bits"
+    ],
+    "explication": "IPv6 utilise des adresses de 128 bits, représentées en hexadécimal séparées par des deux-points.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.80
+  },
+  {
+    "question": "Quel protocole permet l'attribution automatique d'adresses IP aux hôtes ?",
+    "bonne_reponse": "DHCP (Dynamic Host Configuration Protocol)",
+    "distracteurs": [
+      "DNS (Domain Name System)",
+      "ARP (Address Resolution Protocol)",
+      "NAT (Network Address Translation)"
+    ],
+    "explication": "DHCP attribue dynamiquement des adresses IP, masques, passerelles et DNS aux clients qui rejoignent un réseau.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.85
+  },
+  {
+    "question": "Quelle est la différence principale entre TCP et UDP ?",
+    "bonne_reponse": "TCP garantit la livraison des données avec accusé de réception, UDP ne le garantit pas",
+    "distracteurs": [
+      "UDP est plus lent que TCP dans tous les cas",
+      "TCP fonctionne uniquement sur les réseaux locaux",
+      "UDP établit une connexion avant d'envoyer des données"
+    ],
+    "explication": "TCP est orienté connexion avec contrôle d'erreur (3-way handshake), UDP est sans connexion et sans garantie de livraison mais plus rapide.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.65
+  },
+  {
+    "question": "Qu'est-ce que le masque de sous-réseau /26 en notation CIDR ?",
+    "bonne_reponse": "255.255.255.192",
+    "distracteurs": [
+      "255.255.255.128",
+      "255.255.255.224",
+      "255.255.255.240"
+    ],
+    "explication": "/26 signifie 26 bits à 1 : 11111111.11111111.11111111.11000000 = 255.255.255.192, donnant 64 adresses par sous-réseau.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.52
+  },
+  {
+    "question": "Dans le modèle TCP/IP, quelle couche correspond aux couches session, présentation et application du modèle OSI ?",
+    "bonne_reponse": "La couche Application",
+    "distracteurs": [
+      "La couche Transport",
+      "La couche Internet",
+      "La couche Accès réseau"
+    ],
+    "explication": "Le modèle TCP/IP regroupe les couches 5, 6 et 7 du modèle OSI en une seule couche Application.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.58
+  },
+  {
+    "question": "Qu'est-ce qu'une table de routage ?",
+    "bonne_reponse": "Une structure de données qui liste les chemins pour atteindre les réseaux de destination",
+    "distracteurs": [
+      "Une table qui associe les adresses IP aux adresses MAC",
+      "Un registre des connexions TCP actives sur un routeur",
+      "Une liste des ports ouverts sur un pare-feu"
+    ],
+    "explication": "La table de routage contient les préfixes réseau, les interfaces de sortie et les passerelles pour acheminer les paquets.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.61
+  },
+  {
+    "question": "Quel est le rôle du protocole DNS ?",
+    "bonne_reponse": "Traduire les noms de domaine en adresses IP",
+    "distracteurs": [
+      "Sécuriser les communications web par chiffrement",
+      "Attribuer dynamiquement des adresses IP aux clients",
+      "Gérer les files d'attente des paquets sur les routeurs"
+    ],
+    "explication": "DNS (Domain Name System) résout les noms lisibles (ex: google.com) en adresses IP numériques utilisables par les machines.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.84
+  },
+  {
+    "question": "Qu'est-ce que le NAT (Network Address Translation) ?",
+    "bonne_reponse": "Une technique qui permet à plusieurs hôtes d'un réseau privé de partager une seule adresse IP publique",
+    "distracteurs": [
+      "Un protocole de chiffrement des adresses IP pour sécuriser les communications",
+      "Un algorithme de routage dynamique entre routeurs",
+      "Un mécanisme de contrôle de congestion dans TCP"
+    ],
+    "explication": "NAT traduit les adresses privées en adresse publique, permettant la conservation des adresses IPv4 et masquant la topologie interne.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.60
+  },
+  {
+    "question": "Quel protocole de routage dynamique utilise l'algorithme de Dijkstra ?",
+    "bonne_reponse": "OSPF (Open Shortest Path First)",
+    "distracteurs": [
+      "RIP (Routing Information Protocol)",
+      "BGP (Border Gateway Protocol)",
+      "EIGRP (Enhanced Interior Gateway Routing Protocol)"
+    ],
+    "explication": "OSPF est un protocole à état de lien qui utilise l'algorithme SPF de Dijkstra pour calculer les plus courts chemins.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.48
+  },
+  {
+    "question": "Quelle est la taille maximale d'une trame Ethernet standard ?",
+    "bonne_reponse": "1518 octets (sans VLAN tag)",
+    "distracteurs": [
+      "512 octets",
+      "4096 octets",
+      "9000 octets"
+    ],
+    "explication": "La taille maximale d'une trame Ethernet (MTU) est de 1500 octets de données + 18 octets d'en-tête = 1518 octets.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.45
+  },
+  {
+    "question": "Qu'est-ce qu'un VLAN ?",
+    "bonne_reponse": "Un réseau local virtuel qui segmente logiquement un réseau physique en plusieurs réseaux isolés",
+    "distracteurs": [
+      "Un protocole de chiffrement pour les réseaux sans fil",
+      "Un type de câble réseau haute performance",
+      "Un protocole de routage entre sites distants"
+    ],
+    "explication": "Les VLANs permettent de segmenter un réseau physique en plusieurs domaines de broadcast logiquement séparés, améliorant sécurité et performance.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.62
+  },
+  {
+    "question": "Quel protocole est utilisé pour tester la connectivité réseau et mesurer la latence ?",
+    "bonne_reponse": "ICMP (Internet Control Message Protocol)",
+    "distracteurs": [
+      "SNMP (Simple Network Management Protocol)",
+      "FTP (File Transfer Protocol)",
+      "SMTP (Simple Mail Transfer Protocol)"
+    ],
+    "explication": "ICMP est utilisé par les commandes ping et traceroute pour tester la connectivité et mesurer le temps de réponse entre hôtes.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.76
+  },
+  {
+    "question": "Quelle est la métrique utilisée par le protocole RIP pour choisir le meilleur chemin ?",
+    "bonne_reponse": "Le nombre de sauts (hop count), limité à 15 maximum",
+    "distracteurs": [
+      "La bande passante disponible sur chaque lien",
+      "Le délai de propagation entre routeurs",
+      "La charge CPU des routeurs intermédiaires"
+    ],
+    "explication": "RIP utilise uniquement le nombre de sauts comme métrique, avec un maximum de 15 sauts (16 = réseau inaccessible).",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.55
+  },
+  {
+    "question": "Qu'est-ce que le three-way handshake de TCP ?",
+    "bonne_reponse": "Un échange SYN, SYN-ACK, ACK pour établir une connexion TCP fiable",
+    "distracteurs": [
+      "Un mécanisme de chiffrement en trois étapes pour sécuriser TCP",
+      "Un protocole de négociation de bande passante entre deux hôtes",
+      "Une procédure de fermeture de connexion TCP en trois étapes"
+    ],
+    "explication": "Le client envoie SYN, le serveur répond SYN-ACK, le client confirme avec ACK. Ce processus synchronise les numéros de séquence.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.59
+  },
+  {
+    "question": "Quel est le rôle du protocole STP (Spanning Tree Protocol) ?",
+    "bonne_reponse": "Éviter les boucles de commutation dans les réseaux avec des liaisons redondantes",
+    "distracteurs": [
+      "Accélérer la transmission des trames sur les liens saturés",
+      "Chiffrer les communications entre switches",
+      "Attribuer des adresses IP aux interfaces de switch"
+    ],
+    "explication": "STP désactive logiquement les liens redondants pour créer une topologie sans boucle, évitant les tempêtes de broadcast.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.44
+  },
+  {
+    "question": "Quelle technique de sous-réseautage permet d'optimiser l'utilisation des adresses IP en créant des sous-réseaux de tailles différentes ?",
+    "bonne_reponse": "VLSM (Variable Length Subnet Masking)",
+    "distracteurs": [
+      "CIDR (Classless Inter-Domain Routing) uniquement",
+      "NAT (Network Address Translation)",
+      "Supernetting"
+    ],
+    "explication": "VLSM permet d'utiliser des masques de longueur variable pour créer des sous-réseaux adaptés à la taille réelle de chaque segment.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.32
+  },
+  {
+    "question": "Dans quel cas utilise-t-on BGP plutôt qu'OSPF ?",
+    "bonne_reponse": "BGP est utilisé pour le routage entre systèmes autonomes (inter-AS), OSPF est utilisé à l'intérieur d'un même AS",
+    "distracteurs": [
+      "BGP est utilisé sur les petits réseaux, OSPF sur les grands réseaux",
+      "BGP est plus rapide à converger qu'OSPF dans tous les cas",
+      "BGP est utilisé uniquement sur les réseaux sans fil"
+    ],
+    "explication": "BGP (EGP) gère le routage entre opérateurs et AS différents sur Internet. OSPF (IGP) est utilisé au sein d'un même AS.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.28
+  },
+  {
+    "question": "Quelle est la différence entre le mode access et le mode trunk sur un port de switch ?",
+    "bonne_reponse": "Un port access appartient à un seul VLAN, un port trunk transporte plusieurs VLANs simultanément",
+    "distracteurs": [
+      "Un port trunk est plus rapide qu'un port access",
+      "Un port access peut transporter tous les VLANs, pas le trunk",
+      "Il n'y a pas de différence, les deux modes sont équivalents"
+    ],
+    "explication": "Les ports access connectent les hôtes finaux à un VLAN unique. Les ports trunk (IEEE 802.1Q) relient les switches et transportent plusieurs VLANs avec des tags.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.50
+  },
+  {
+    "question": "Qu'est-ce que le TTL (Time To Live) dans un paquet IP ?",
+    "bonne_reponse": "Un compteur décrémenté à chaque saut pour éviter les boucles de routage infinies",
+    "distracteurs": [
+      "La durée de validité d'un certificat SSL",
+      "Le temps maximum d'attente d'une réponse TCP",
+      "La durée de vie d'une entrée dans le cache ARP"
+    ],
+    "explication": "Le TTL est décrémenté de 1 à chaque routeur traversé. Quand il atteint 0, le paquet est supprimé et un message ICMP Time Exceeded est envoyé.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.57
+  },
+  {
+    "question": "Quel mécanisme permet à OSPF de détecter rapidement une panne de lien ?",
+    "bonne_reponse": "Les messages Hello envoyés périodiquement entre voisins OSPF",
+    "distracteurs": [
+      "Les requêtes ARP envoyées aux voisins toutes les secondes",
+      "Les paquets ICMP ping envoyés automatiquement",
+      "Les trames STP envoyées sur chaque interface"
+    ],
+    "explication": "OSPF envoie des paquets Hello à intervalles réguliers (10s par défaut). Si aucun Hello n'est reçu pendant le Dead Interval (40s), le voisin est déclaré injoignable.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.35
+  },
+  {
+    "question": "Quelle est la différence entre le routage statique et le routage dynamique ?",
+    "bonne_reponse": "Le routage statique est configuré manuellement par l'administrateur, le routage dynamique s'adapte automatiquement aux changements de topologie",
+    "distracteurs": [
+      "Le routage statique est plus sécurisé et toujours préférable",
+      "Le routage dynamique ne fonctionne que sur les réseaux IPv6",
+      "Le routage statique utilise des protocoles comme OSPF et RIP"
+    ],
+    "explication": "Le routage statique est simple et prévisible mais ne s'adapte pas aux pannes. Le routage dynamique (OSPF, RIP, BGP) recalcule automatiquement les chemins.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.72
+  },
+  {
+    "question": "Qu'est-ce que la fragmentation IP et dans quel cas se produit-elle ?",
+    "bonne_reponse": "La division d'un paquet IP en fragments plus petits lorsqu'il dépasse le MTU d'un lien intermédiaire",
+    "distracteurs": [
+      "La duplication d'un paquet pour assurer sa livraison",
+      "Le chiffrement d'un paquet en plusieurs morceaux pour la sécurité",
+      "La compression des données pour optimiser la bande passante"
+    ],
+    "explication": "Si un paquet est plus grand que le MTU du lien suivant, le routeur le fragmente. Les fragments sont réassemblés à destination par IP.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.43
+  },
+  {
+    "question": "Quel est le rôle de la fenêtre glissante (sliding window) dans TCP ?",
+    "bonne_reponse": "Contrôler le débit en permettant l'envoi de plusieurs segments avant d'attendre un accusé de réception",
+    "distracteurs": [
+      "Chiffrer les données envoyées segment par segment",
+      "Fragmenter les grands paquets en segments de taille fixe",
+      "Établir la connexion TCP entre les deux hôtes"
+    ],
+    "explication": "La fenêtre glissante TCP permet d'envoyer plusieurs segments sans attendre un ACK pour chacun, améliorant l'utilisation de la bande passante.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.30
+  },
+  {
+    "question": "Qu'est-ce qu'une attaque de type ARP Spoofing ?",
+    "bonne_reponse": "L'envoi de fausses réponses ARP pour associer l'adresse MAC de l'attaquant à l'IP d'un hôte légitime",
+    "distracteurs": [
+      "Une attaque qui surcharge le serveur DNS avec de fausses requêtes",
+      "Une tentative de deviner le mot de passe d'un switch par force brute",
+      "Une attaque qui fragmente les paquets pour contourner les pare-feux"
+    ],
+    "explication": "L'ARP Spoofing empoisonne le cache ARP des victimes pour intercepter le trafic (man-in-the-middle). C'est une menace majeure sur les réseaux locaux.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.33
+  },
+  {
+    "question": "Quelle est la différence entre HTTPS et HTTP ?",
+    "bonne_reponse": "HTTPS chiffre les communications via TLS/SSL, HTTP transmet les données en clair",
+    "distracteurs": [
+      "HTTPS est plus rapide car il compresse les données automatiquement",
+      "HTTPS utilise le port 80, HTTP utilise le port 443",
+      "HTTPS ne fonctionne que sur les réseaux internes d'entreprise"
+    ],
+    "explication": "HTTPS encapsule HTTP dans TLS/SSL, assurant confidentialité, intégrité et authentification. Il utilise le port 443 par défaut.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.83
+  },
+  {
+    "question": "Qu'est-ce que le protocole SNMP et à quoi sert-il ?",
+    "bonne_reponse": "Un protocole de gestion réseau permettant de surveiller et configurer les équipements réseau à distance",
+    "distracteurs": [
+      "Un protocole de transfert de fichiers sécurisé entre serveurs",
+      "Un protocole de messagerie instantanée pour les administrateurs réseau",
+      "Un protocole de synchronisation d'horloge sur les réseaux"
+    ],
+    "explication": "SNMP permet aux systèmes de gestion réseau (NMS) de collecter des métriques (CPU, trafic, erreurs) et de configurer les équipements via des MIB.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.47
+  },
+  {
+    "question": "Qu'est-ce que le protocole NTP et pourquoi est-il important en réseau ?",
+    "bonne_reponse": "Network Time Protocol — il synchronise les horloges des équipements pour la cohérence des logs et des certificats",
+    "distracteurs": [
+      "Un protocole de transfert de fichiers réseau haute performance",
+      "Un protocole de négociation de topologie entre switches",
+      "Un protocole de tunneling pour les réseaux privés virtuels"
+    ],
+    "explication": "NTP synchronise les horloges avec une précision de quelques millisecondes. Indispensable pour les logs, l'authentification Kerberos et les certificats TLS.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.50
+  },
+  {
+    "question": "Quelle est la différence entre un firewall stateful et un firewall stateless ?",
+    "bonne_reponse": "Un firewall stateful suit l'état des connexions actives, un firewall stateless filtre chaque paquet indépendamment",
+    "distracteurs": [
+      "Un firewall stateful est moins sécurisé car il autorise plus de trafic",
+      "Un firewall stateless est plus lent car il analyse tout le contenu des paquets",
+      "Il n'y a aucune différence de sécurité entre les deux types"
+    ],
+    "explication": "Le firewall stateful maintient une table des connexions et autorise les réponses légitimes. Le stateless applique des règles fixes à chaque paquet sans contexte.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.36
+  },
+  {
+    "question": "Quel protocole est utilisé par la commande traceroute pour cartographier le chemin réseau ?",
+    "bonne_reponse": "ICMP avec des paquets TTL incrémentaux (ou UDP sur Linux)",
+    "distracteurs": [
+      "TCP sur le port 80 uniquement",
+      "ARP pour découvrir chaque routeur intermédiaire",
+      "OSPF pour lire les tables de routage des équipements"
+    ],
+    "explication": "Traceroute envoie des paquets avec TTL=1, 2, 3... Chaque routeur qui décrémente le TTL à 0 renvoie un ICMP Time Exceeded, révélant son adresse IP.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.31
+  },
+  {
+    "question": "Combien de sous-réseaux peut-on créer en divisant un réseau /24 en sous-réseaux /27 ?",
+    "bonne_reponse": "8 sous-réseaux de 30 hôtes chacun",
+    "distracteurs": [
+      "4 sous-réseaux de 62 hôtes chacun",
+      "16 sous-réseaux de 14 hôtes chacun",
+      "6 sous-réseaux de 30 hôtes chacun"
+    ],
+    "explication": "Un /24 donne 256 adresses. Un /27 donne 32 adresses (30 utilisables). 256/32 = 8 sous-réseaux. On emprunte 3 bits (2^3=8 sous-réseaux).",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.25
+  },
+  {
+    "question": "Qu'est-ce que le protocole 802.1Q et dans quel contexte est-il utilisé ?",
+    "bonne_reponse": "Un standard IEEE qui définit le tagging VLAN sur les trames Ethernet pour les liaisons trunk",
+    "distracteurs": [
+      "Un protocole de chiffrement pour les réseaux sans fil d'entreprise",
+      "Un standard de câblage pour les réseaux Ethernet Gigabit",
+      "Un protocole de détection des boucles dans les réseaux commutés"
+    ],
+    "explication": "802.1Q ajoute un tag de 4 octets dans la trame Ethernet incluant le VLAN ID (12 bits, 4094 VLANs max). Utilisé sur les liens trunk entre switches.",
+    "difficulte_annotee": "difficile",
+    "taux_reussite_observe": 0.29
+  },
+  {
+    "question": "Quelle est la principale différence entre un réseau en topologie étoile et une topologie maillée ?",
+    "bonne_reponse": "La topologie étoile centralise les connexions sur un équipement central, la topologie maillée connecte chaque nœud à plusieurs autres",
+    "distracteurs": [
+      "La topologie étoile est plus rapide dans tous les cas",
+      "La topologie maillée ne supporte pas les protocoles TCP/IP",
+      "La topologie étoile est réservée aux réseaux sans fil"
+    ],
+    "explication": "En étoile, une panne du commutateur central coupe tout le réseau. En maillage, les chemins redondants assurent la tolérance aux pannes.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.74
+  },
+  {
+    "question": "Qu'est-ce qu'une adresse de broadcast et comment est-elle utilisée ?",
+    "bonne_reponse": "L'adresse la plus haute d'un sous-réseau, utilisée pour envoyer un message à tous les hôtes du réseau simultanément",
+    "distracteurs": [
+      "L'adresse la plus basse d'un sous-réseau, réservée au routeur",
+      "Une adresse spéciale utilisée uniquement par les routeurs pour échanger leurs tables",
+      "L'adresse MAC FF:FF:FF:FF:FF:FF utilisée uniquement en IPv6"
+    ],
+    "explication": "L'adresse broadcast (ex: 192.168.1.255 pour un /24) permet d'envoyer un paquet à tous les hôtes du sous-réseau. Elle n'est pas routable entre réseaux.",
+    "difficulte_annotee": "facile",
+    "taux_reussite_observe": 0.69
+  },
+  {
+    "question": "Quel est le rôle d'un proxy dans un réseau d'entreprise ?",
+    "bonne_reponse": "Servir d'intermédiaire entre les clients internes et Internet pour filtrer, mettre en cache et contrôler le trafic web",
+    "distracteurs": [
+      "Attribuer des adresses IP aux postes de travail automatiquement",
+      "Chiffrer toutes les communications entre le réseau interne et externe",
+      "Convertir les adresses IPv4 en adresses IPv6 pour la transition"
+    ],
+    "explication": "Le proxy intercepte les requêtes web, peut filtrer les contenus indésirables, mettre en cache les pages fréquentes et masquer les IPs internes.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.56
+  },
+  {
+    "question": "Quelle est la différence entre un VPN site-à-site et un VPN d'accès distant ?",
+    "bonne_reponse": "Le VPN site-à-site connecte deux réseaux d'entreprise de façon permanente, le VPN d'accès distant connecte un utilisateur individuel au réseau d'entreprise",
+    "distracteurs": [
+      "Le VPN site-à-site est moins sécurisé car il n'utilise pas de chiffrement",
+      "Le VPN d'accès distant ne fonctionne que sur les connexions filaires",
+      "Il n'y a pas de différence technique entre les deux types de VPN"
+    ],
+    "explication": "VPN site-à-site : tunnel permanent entre deux routeurs (ex: siège-succursale). VPN accès distant : connexion à la demande d'un employé en télétravail.",
+    "difficulte_annotee": "moyen",
+    "taux_reussite_observe": 0.54
+  }
+]

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QCM-Auto — Portail Professeur</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #3730a3;
+      --success: #059669;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      color: white; padding: 1.2rem 2rem;
+      display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 4px 20px rgba(79,70,229,0.3);
+    }
+    header .logo { font-size: 1.8rem; }
+    header h1 { font-size: 1.4rem; font-weight: 700; }
+    header p { font-size: 0.85rem; opacity: 0.85; }
+
+    /* LAYOUT */
+    .container { max-width: 1100px; margin: 2rem auto; padding: 0 1.5rem; }
+
+    /* UPLOAD ZONE */
+    .upload-card {
+      background: var(--card); border-radius: 16px;
+      border: 2px dashed var(--border); padding: 2.5rem;
+      text-align: center; transition: all 0.3s; cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+    .upload-card:hover, .upload-card.drag-over {
+      border-color: var(--primary); background: #eef2ff;
+    }
+    .upload-card .icon { font-size: 3rem; margin-bottom: 1rem; }
+    .upload-card h2 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary); }
+    .upload-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.2rem; }
+    #fileInput { display: none; }
+    .file-label {
+      display: inline-block; background: var(--primary); color: white;
+      padding: 0.7rem 2rem; border-radius: 8px; cursor: pointer;
+      font-weight: 600; transition: background 0.2s;
+    }
+    .file-label:hover { background: var(--primary-dark); }
+    #fileName { margin-top: 0.8rem; font-size: 0.9rem; color: var(--muted); }
+
+    /* OPTIONS */
+    .options-row {
+      display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .option-group {
+      background: var(--card); border-radius: 12px; padding: 1rem 1.5rem;
+      border: 1px solid var(--border); flex: 1; min-width: 200px;
+    }
+    .option-group label { font-size: 0.85rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 0.4rem; }
+    .option-group select, .option-group input {
+      width: 100%; padding: 0.5rem; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.95rem; outline: none; background: var(--bg);
+    }
+    .option-group select:focus, .option-group input:focus { border-color: var(--primary); }
+
+    /* BOUTON GÉNÉRER */
+    #generateBtn {
+      width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: white; border: none; border-radius: 12px; cursor: pointer;
+      transition: all 0.3s; margin-bottom: 2rem; letter-spacing: 0.5px;
+    }
+    #generateBtn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(79,70,229,0.35); }
+    #generateBtn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* PROGRESS */
+    #progress { display: none; margin-bottom: 2rem; }
+    .progress-bar-bg {
+      background: #e2e8f0; border-radius: 999px; height: 8px; margin-bottom: 0.5rem; overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%; background: linear-gradient(90deg, var(--primary), #7c3aed);
+      border-radius: 999px; transition: width 0.4s ease;
+    }
+    .progress-steps { display: flex; justify-content: space-between; }
+    .step {
+      font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 0.3rem;
+    }
+    .step.active { color: var(--primary); font-weight: 600; }
+    .step.done { color: var(--success); }
+
+    /* RÉSULTATS */
+    #results { display: none; }
+    .results-header {
+      background: var(--card); border-radius: 16px; padding: 1.5rem 2rem;
+      border: 1px solid var(--border); margin-bottom: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+    }
+    .results-header h2 { font-size: 1.2rem; color: var(--primary); }
+    .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat .val { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+    .stat .lbl { font-size: 0.75rem; color: var(--muted); }
+
+    /* SUMMARY */
+    .summary-box {
+      background: #eff6ff; border-left: 4px solid var(--primary);
+      border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem;
+      font-size: 0.95rem; line-height: 1.6;
+    }
+    .summary-box strong { display: block; margin-bottom: 0.4rem; color: var(--primary); }
+
+    /* FILTRES */
+    .filters {
+      display: flex; gap: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 0.4rem 1.2rem; border-radius: 999px; border: 2px solid var(--border);
+      background: white; cursor: pointer; font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { border-color: var(--primary); background: var(--primary); color: white; }
+    .filter-btn.facile.active { border-color: var(--success); background: var(--success); }
+    .filter-btn.moyen.active { border-color: var(--warning); background: var(--warning); }
+    .filter-btn.difficile.active { border-color: var(--danger); background: var(--danger); }
+
+    /* QUESTIONS */
+    .question-card {
+      background: var(--card); border-radius: 14px; padding: 1.5rem;
+      border: 1px solid var(--border); margin-bottom: 1rem;
+      transition: box-shadow 0.2s;
+    }
+    .question-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+    .q-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 1rem; gap: 1rem;
+    }
+    .q-number {
+      background: var(--primary); color: white; width: 28px; height: 28px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+    }
+    .q-text {
+      flex: 1; font-weight: 600; font-size: 1rem; line-height: 1.5;
+      border: none; background: transparent; resize: none; outline: none;
+      font-family: inherit; color: var(--text); width: 100%;
+    }
+    .q-text:focus { background: #f8fafc; border-radius: 6px; padding: 4px; }
+    .badge {
+      padding: 0.25rem 0.8rem; border-radius: 999px; font-size: 0.75rem;
+      font-weight: 700; flex-shrink: 0; white-space: nowrap;
+    }
+    .badge.facile { background: #d1fae5; color: #065f46; }
+    .badge.moyen { background: #fef3c7; color: #92400e; }
+    .badge.difficile { background: #fee2e2; color: #991b1b; }
+
+    .options-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .option-item {
+      display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1rem;
+      border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg);
+      transition: all 0.2s;
+    }
+    .option-item.correct { border-color: var(--success); background: #d1fae5; }
+    .option-key { font-weight: 700; color: var(--primary); min-width: 20px; }
+    .option-item.correct .option-key { color: var(--success); }
+    .option-text {
+      flex: 1; border: none; background: transparent; outline: none;
+      font-family: inherit; font-size: 0.92rem; color: var(--text);
+    }
+    .option-text:focus { background: white; border-radius: 4px; padding: 2px 4px; }
+    .correct-tag { font-size: 0.72rem; font-weight: 700; color: var(--success); }
+
+    .explanation {
+      font-size: 0.85rem; color: var(--muted); background: #f8fafc;
+      border-radius: 6px; padding: 0.6rem 1rem; border-left: 3px solid var(--border);
+    }
+    .explanation span { color: var(--primary); font-weight: 600; }
+
+    /* EXPORT */
+    .export-bar {
+      display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;
+    }
+    .btn-export {
+      padding: 0.7rem 1.5rem; border-radius: 10px; border: none;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-json { background: #dbeafe; color: #1d4ed8; }
+    .btn-json:hover { background: #bfdbfe; }
+    .btn-print { background: #f3e8ff; color: #7c3aed; }
+    .btn-print:hover { background: #e9d5ff; }
+    .btn-retrain { background: #d1fae5; color: #065f46; }
+    .btn-retrain:hover { background: #a7f3d0; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem; background: #1e293b; color: white;
+      padding: 0.8rem 1.5rem; border-radius: 10px; font-size: 0.9rem;
+      transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 600px) {
+      .results-header { flex-direction: column; }
+      .stats { gap: 1rem; }
+    }
+
+    @media print {
+      header, .upload-card, .options-row, #generateBtn, .filters, .export-bar { display: none !important; }
+      .question-card { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎓</div>
+  <div>
+    <h1>QCM-Auto — Portail Professeur</h1>
+    <p>Générez des QCM intelligents à partir de vos vidéos de cours</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Zone upload -->
+  <div class="upload-card" id="dropZone">
+    <div class="icon">🎬</div>
+    <h2>Déposez votre vidéo de cours</h2>
+    <p>Formats supportés : MP4, MP3, WAV, M4A, WEBM — max 500 MB</p>
+    <label class="file-label" for="fileInput">📂 Choisir un fichier</label>
+    <input type="file" id="fileInput" accept=".mp4,.mp3,.wav,.m4a,.webm,.ogg"/>
+    <div id="fileName">Aucun fichier sélectionné</div>
+  </div>
+
+  <!-- Options -->
+  <div class="options-row">
+    <div class="option-group">
+      <label>🌍 Langue du cours</label>
+      <select id="langSelect">
+        <option value="fr">🇫🇷 Français</option>
+        <option value="en">🇬🇧 Anglais</option>
+        <option value="ar">🇩🇿 Arabe</option>
+      </select>
+    </div>
+    <div class="option-group">
+      <label>📝 Nombre de questions</label>
+      <input type="number" id="numQuestions" value="10" min="3" max="20"/>
+    </div>
+    <div class="option-group">
+      <label>🤖 Modèle Whisper</label>
+      <select id="whisperModel">
+        <option value="tiny">Tiny (rapide, ~150MB RAM)</option>
+        <option value="base">Base (meilleur, ~300MB RAM)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Bouton générer -->
+  <button id="generateBtn" disabled>🚀 Générer le QCM</button>
+
+  <!-- Barre de progression -->
+  <div id="progress">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-steps">
+      <div class="step" id="s1">🎙️ Transcription</div>
+      <div class="step" id="s2">🧠 Extraction concepts</div>
+      <div class="step" id="s3">📝 Génération QCM</div>
+      <div class="step" id="s4">📊 Difficulté</div>
+    </div>
+  </div>
+
+  <!-- Résultats -->
+  <div id="results">
+    <div class="results-header">
+      <div>
+        <h2 id="resultsTitle">QCM généré</h2>
+        <p style="color:var(--muted);font-size:0.85rem" id="resultsSubtitle"></p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="val" id="statTotal">0</div><div class="lbl">Questions</div></div>
+        <div class="stat"><div class="val" id="statFacile" style="color:var(--success)">0</div><div class="lbl">Faciles</div></div>
+        <div class="stat"><div class="val" id="statMoyen" style="color:var(--warning)">0</div><div class="lbl">Moyennes</div></div>
+        <div class="stat"><div class="val" id="statDiff" style="color:var(--danger)">0</div><div class="lbl">Difficiles</div></div>
+      </div>
+    </div>
+
+    <!-- Résumé du cours -->
+    <div class="summary-box" id="summaryBox" style="display:none">
+      <strong>📋 Résumé du cours</strong>
+      <span id="summaryText"></span>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterQuestions('all')">Toutes</button>
+      <button class="filter-btn facile" onclick="filterQuestions('facile')">✅ Facile</button>
+      <button class="filter-btn moyen" onclick="filterQuestions('moyen')">⚡ Moyen</button>
+      <button class="filter-btn difficile" onclick="filterQuestions('difficile')">🔥 Difficile</button>
+    </div>
+
+    <!-- Liste des questions -->
+    <div id="questionsList"></div>
+
+    <!-- Export -->
+    <div class="export-bar">
+      <button class="btn-export btn-json" onclick="exportJSON()">📥 Exporter JSON</button>
+      <button class="btn-export btn-print" onclick="window.print()">🖨️ Imprimer</button>
+      <button class="btn-export btn-retrain" onclick="retrainModel()">🔄 Ré-entraîner le modèle</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let allQuestions = [];
+  let currentFilter = 'all';
+
+  // Drag & drop
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f) { fileInput.files = e.dataTransfer.files; handleFile(f); }
+  });
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    document.getElementById('fileName').textContent = `📎 ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)`;
+    document.getElementById('generateBtn').disabled = false;
+  }
+
+  // Génération
+  document.getElementById('generateBtn').addEventListener('click', async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Traitement en cours...';
+
+    document.getElementById('progress').style.display = 'block';
+    document.getElementById('results').style.display = 'none';
+
+    // Animation progression
+    animateProgress();
+
+    const formData = new FormData();
+    formData.append('video', file);
+    formData.append('num_questions', document.getElementById('numQuestions').value);
+    formData.append('language', document.getElementById('langSelect').value);
+
+    try {
+      const res = await fetch('/api/generate', { method: 'POST', body: formData });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.detail || 'Erreur serveur');
+      }
+      const data = await res.json();
+      displayResults(data);
+      showToast('✅ QCM généré avec succès !');
+    } catch (e) {
+      showToast(`❌ Erreur : ${e.message}`);
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🚀 Générer le QCM';
+      document.getElementById('progress').style.display = 'none';
+      resetProgress();
+    }
+  });
+
+  function animateProgress() {
+    const steps = [
+      { el: 's1', pct: 25, delay: 500 },
+      { el: 's2', pct: 50, delay: 8000 },
+      { el: 's3', pct: 75, delay: 15000 },
+      { el: 's4', pct: 95, delay: 22000 },
+    ];
+    steps.forEach(({ el, pct, delay }) => {
+      setTimeout(() => {
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        const stepEl = document.getElementById(el);
+        if (stepEl) {
+          stepEl.classList.add('active');
+          // Marquer les précédents comme done
+          const all = ['s1','s2','s3','s4'];
+          const idx = all.indexOf(el);
+          all.slice(0, idx).forEach(id => {
+            const s = document.getElementById(id);
+            if (s) { s.classList.remove('active'); s.classList.add('done'); }
+          });
+        }
+      }, delay);
+    });
+  }
+
+  function resetProgress() {
+    document.getElementById('progressFill').style.width = '0%';
+    document.querySelectorAll('.step').forEach(s => { s.classList.remove('active','done'); });
+  }
+
+  function displayResults(data) {
+    allQuestions = data.questions || [];
+
+    document.getElementById('resultsTitle').textContent = `📋 QCM — ${data.filename || 'Cours'}`;
+    document.getElementById('resultsSubtitle').textContent = `${allQuestions.length} questions générées automatiquement`;
+
+    // Stats
+    const counts = { facile: 0, moyen: 0, difficile: 0 };
+    allQuestions.forEach(q => { const d = (q.predicted_difficulty || q.difficulty_label || 'moyen').toLowerCase(); if (counts[d] !== undefined) counts[d]++; });
+    document.getElementById('statTotal').textContent = allQuestions.length;
+    document.getElementById('statFacile').textContent = counts.facile;
+    document.getElementById('statMoyen').textContent = counts.moyen;
+    document.getElementById('statDiff').textContent = counts.difficile;
+
+    // Résumé
+    if (data.summary) {
+      document.getElementById('summaryText').textContent = data.summary;
+      document.getElementById('summaryBox').style.display = 'block';
+    }
+
+    renderQuestions(allQuestions);
+    document.getElementById('results').style.display = 'block';
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function renderQuestions(questions) {
+    const container = document.getElementById('questionsList');
+    container.innerHTML = '';
+    if (!questions.length) {
+      container.innerHTML = '<p style="text-align:center;color:var(--muted);padding:2rem">Aucune question dans cette catégorie.</p>';
+      return;
+    }
+    questions.forEach((q, i) => {
+      const diff = (q.predicted_difficulty || q.difficulty_label || 'moyen').toLowerCase();
+      const opts = q.options || {};
+      const correct = q.correct_answer || 'A';
+
+      const optionsHTML = Object.entries(opts).map(([key, val]) => `
+        <div class="option-item ${key === correct ? 'correct' : ''}">
+          <span class="option-key">${key}</span>
+          <input class="option-text" value="${escHtml(val)}" />
+          ${key === correct ? '<span class="correct-tag">✓ Correcte</span>' : ''}
+        </div>`).join('');
+
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.dataset.diff = diff;
+      card.innerHTML = `
+        <div class="q-header">
+          <div class="q-number">${i + 1}</div>
+          <textarea class="q-text" rows="2">${escHtml(q.question)}</textarea>
+          <span class="badge ${diff}">${diff.charAt(0).toUpperCase()+diff.slice(1)}</span>
+        </div>
+        <div class="options-list">${optionsHTML}</div>
+        ${q.explanation ? `<div class="explanation"><span>💡 Explication :</span> ${escHtml(q.explanation)}</div>` : ''}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function filterQuestions(level) {
+    currentFilter = level;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    const filtered = level === 'all' ? allQuestions : allQuestions.filter(q => (q.predicted_difficulty || q.difficulty_label || 'moyen').toLowerCase() === level);
+    renderQuestions(filtered);
+  }
+
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify({ questions: allQuestions }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = 'qcm_export.json'; a.click();
+    showToast('📥 Export JSON téléchargé !');
+  }
+
+  async function retrainModel() {
+    showToast('🔄 Ré-entraînement en cours...');
+    try {
+      const res = await fetch('/api/train', { method: 'POST' });
+      const d = await res.json();
+      showToast(`✅ Modèle ré-entraîné ! Accuracy : ${(d.accuracy*100).toFixed(0)}%`);
+    } catch (e) { showToast('❌ Erreur de ré-entraînement'); }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
